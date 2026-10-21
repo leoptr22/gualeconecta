@@ -1,0 +1,112 @@
+/* Frosted glass for the web; Material UI remains the component system. */
+:root { --page:#eaf3ef; --ink:#18312d; --muted:#4d6960; --glass:rgba(255,255,255,.78); --solid:#f8fcfa; --glass-line:rgba(255,255,255,.9); --accent:#00695c; --ease-out:cubic-bezier(.23,1,.32,1); }
+body { background:radial-gradient(ellipse at 85% 15%,#cce8dc 0,transparent 45%),radial-gradient(ellipse at 10% 70%,#dfebe4 0,transparent 50%),var(--page) !important; color:var(--ink); }
+::selection { background:#00695c; color:#f5fcf8; }
+input,textarea { caret-color:var(--accent); }
+* { scrollbar-color:#89a89a transparent; scrollbar-width:thin; }
+a { text-underline-offset:4px; }
+.topbar,.sidebar,.publication-card,.empty-state,.launch-banner,.sidebar-note,.tips-checklist,.tips-list .MuiAccordion-root {
+  background:var(--glass) !important;
+  border:1px solid var(--glass-line);
+  backdrop-filter:blur(16px) saturate(125%);
+  -webkit-backdrop-filter:blur(16px) saturate(125%);
+  box-shadow:inset 0 1px 0 #ffffff70,0 12px 36px -26px #17433255;
+}
+.topbar { height:80px; position:sticky; top:0; z-index:10; padding:0 32px; }
+.header-actions { display:flex; align-items:center; gap:12px; }
+.account-menu { display:flex; align-items:center; gap:4px; font-size:14px; }
+.brand { color:var(--ink); letter-spacing:-.04em; }
+.brand-light { margin-left:2px; }
+.location,.nav-label,.sidebar-bottom,footer { color:var(--muted); }
+.app-layout { grid-template-columns:205px 1fr; max-width:1480px; gap:24px; padding:24px; }
+.sidebar { min-height:calc(100dvh - 128px); border-radius:22px; align-self:start; position:sticky; top:104px; padding:28px 14px; }
+.nav-label { display:none !important; }
+.nav-item { color:var(--muted) !important; }
+.nav-item.active { color:var(--accent) !important; background:#00695c12; }
+.sidebar-note { margin-top:48px; padding:18px 12px; }
+.sidebar-bottom { font-size:12px; padding-top:60px; }
+main { padding:14px 12px; animation:none; }
+.discovery-hero { display:grid; grid-template-columns:minmax(0,.9fr) minmax(0,1.2fr); align-items:center; gap:32px; margin-bottom:30px; }
+.intro h1 { font-size:clamp(30px,3.3vw,48px); font-weight:800; letter-spacing:-.04em; line-height:1.15; margin:0; text-wrap:balance; }
+.intro-copy { max-width:38ch; font-size:16px !important; line-height:1.7 !important; }
+.city-carousel { min-width:0; }
+.city-carousel:focus-visible { outline:3px solid var(--accent); outline-offset:5px; border-radius:22px; }
+.city-image-frame { position:relative; height:260px; border-radius:22px; overflow:hidden; background:#b9d2c6; box-shadow:0 18px 32px -20px #17433265; }
+.city-image { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity 240ms var(--ease-out); }
+.city-image.is-active { opacity:1; }
+.city-image-error { position:absolute; inset:0; display:grid; place-content:center; padding:32px; background:var(--solid); }
+.carousel-controls { position:absolute; right:14px; bottom:14px; display:flex; gap:8px; }
+.carousel-controls .MuiIconButton-root { background:#ffffffdc; border:1px solid #fff; color:#18312d; backdrop-filter:blur(12px); width:44px; height:44px; }
+.carousel-controls .MuiIconButton-root:hover { background:#f5fcf8; }
+.city-caption { display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:6px 14px; padding:12px 3px 0; }
+.city-caption strong { font-size:14px; }
+.city-caption small { font-size:12px; color:var(--muted); }
+.city-caption a { color:inherit; }
+.search-row { margin-top:0; }
+.search-row .MuiOutlinedInput-root { background:var(--glass); backdrop-filter:blur(12px); }
+.category-row { margin:18px 0 24px; }
+.category-row .MuiChip-root { background:var(--glass); }
+.category-row .MuiChip-colorPrimary { background:var(--accent); color:var(--solid); }
+.launch-banner { padding:20px 24px; margin-bottom:28px; }
+.launch-banner .MuiChip-root { background:#00695c12; color:var(--accent); }
+.launch-banner p { color:var(--muted); }
+.results-heading { margin:24px 0 18px; }
+.empty-state { padding:38px 20px; }
+.publication-card { animation-duration:240ms; }
+.feature-icon,.art-caption,.card-cover { transition-duration:180ms; }
+.tips-section { padding:8px 0 20px; }
+.tips-intro { max-width:70ch; margin-bottom:32px; }
+.tips-intro h1 { font-size:clamp(30px,3.4vw,44px); font-weight:800; letter-spacing:-.035em; line-height:1.2; text-wrap:balance; }
+.tips-list { display:flex; flex-direction:column; gap:12px; }
+.tips-list .MuiAccordion-root { border-radius:16px !important; overflow:hidden; }
+.tips-list .MuiAccordion-root::before { display:none; }
+.tips-list .MuiAccordionSummary-root { min-height:68px; padding:8px 24px; }
+.tips-list .MuiAccordionDetails-root { padding:0 24px 24px; max-width:75ch; }
+.tips-checklist { margin-top:32px; padding:28px; border-radius:22px; }
+.google-login-button { min-height:44px; display:flex; justify-content:center; }
+.MuiDialog-paper { background:var(--solid) !important; border:1px solid var(--glass-line); }
+.MuiButton-root:active { transform:scale(.97); }
+@media (prefers-color-scheme:dark) {
+ :root { --page:#0c231d; --ink:#eef6f2; --muted:#bbd0c5; --glass:rgba(22,51,41,.9); --solid:#17342a; --glass-line:rgba(164,208,186,.2); --accent:#8ad4bc; }
+ body { background:radial-gradient(ellipse at 85% 15%,#1b4c38 0,transparent 50%),var(--page) !important; }
+ .topbar,.sidebar,.publication-card,.empty-state,.launch-banner,.sidebar-note,.tips-checklist,.tips-list .MuiAccordion-root { box-shadow:inset 0 1px 0 #ffffff10,0 12px 36px -26px #06130d; }
+ .card-art { filter:brightness(.88); }
+ .media-picker { background:#1c3e30; border-color:#628772; }
+ .nav-item.active,.launch-banner .MuiChip-root { background:#8ad4bc15; }
+ .eyebrow { color:var(--accent) !important; }
+ footer { border-color:var(--glass-line); }
+}
+@supports not (backdrop-filter:blur(1px)) { .topbar,.sidebar,.publication-card,.empty-state,.launch-banner,.sidebar-note,.tips-checklist,.tips-list .MuiAccordion-root { background:var(--solid) !important; } }
+@media (prefers-reduced-transparency:reduce) { .topbar,.sidebar,.publication-card,.empty-state,.launch-banner,.sidebar-note,.tips-checklist,.tips-list .MuiAccordion-root,.search-row .MuiOutlinedInput-root { background:var(--solid) !important; backdrop-filter:none; -webkit-backdrop-filter:none; } }
+@media (max-width:1100px) { .app-layout { grid-template-columns:180px 1fr; gap:18px; padding:18px; } .discovery-hero { gap:22px; } .location { display:none; } .city-image-frame { height:240px; } .sidebar-note { padding:16px 10px; } }
+@media (max-width:800px) { .topbar { padding:0 18px; height:76px; } .app-layout { display:block; padding:14px; } .sidebar { position:static; min-height:0; padding:8px; flex-direction:row; margin-bottom:20px; gap:2px; overflow-x:auto; } main { padding:8px 4px; } .nav-item { flex-shrink:0; } .discovery-hero { grid-template-columns:1fr; gap:22px; } .intro-copy { max-width:55ch; } .city-image-frame { height:220px; } .header-actions { gap:4px; } .account-menu span { display:none; } .launch-banner { padding:22px; } .header-actions .MuiButton-root { min-width:0; } }
+@media (max-width:500px) { .brand { font-size:18px; gap:7px; } .brand-mark { font-size:25px; padding:0 7px 4px; border-radius:10px; } .topbar { padding:0 12px; gap:8px; } .header-actions .MuiButton-root { font-size:12px; padding:10px 9px; } .header-actions .MuiButton-startIcon { display:none; } .intro h1 { font-size:34px; } .city-caption { align-items:flex-start; flex-direction:column; } .tips-list .MuiAccordionSummary-root { padding:8px 16px; } .tips-list .MuiAccordionDetails-root { padding:0 16px 20px; } }
+@media (max-width:500px) { .sidebar { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:4px; overflow:visible; } .sidebar .nav-item { justify-content:center !important; min-width:0; } }
+@media (prefers-reduced-motion:reduce) { .MuiButton-root:active { transform:none; } .city-image { transition:none; } }
+
+/* Local identity: the supplied flag is a quiet layer, never a content backdrop. */
+body { isolation:isolate; background:var(--page) !important; }
+body::before { content:''; position:fixed; inset:0; z-index:-1; pointer-events:none; background:url('/brand/gualeguaychu.png') center 40% / cover no-repeat; opacity:.12; }
+.brand-logo { display:block; width:66px; height:44px; object-fit:cover; border-radius:7px; box-shadow:0 1px 5px #18312d20; }
+.brand { letter-spacing:-.045em; }
+.discovery-hero { display:block; padding:26px 0 24px; margin-bottom:8px; }
+.intro { max-width:820px; border-left:3px solid var(--accent); padding-left:24px; }
+.intro h1 { font-size:clamp(34px,4.5vw,58px); text-wrap:initial; letter-spacing:-.055em; }
+.intro-copy { max-width:58ch; margin-top:16px !important; }
+.search-row .animated-search { min-width:0; }
+.animated-search input::placeholder { color:var(--muted); opacity:.8; }
+.launch-banner,.sidebar-note,.tips-list .MuiAccordion-root { transition:box-shadow 220ms var(--ease-out), border-color 220ms ease, background-color 220ms ease; }
+.publication-card { position:relative; }
+.publication-card::after { content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; background:linear-gradient(115deg,transparent 20%,#ffffff55 45%,transparent 65%); background-size:250% 100%; background-position:130% 0; opacity:0; transition:background-position 650ms var(--ease-out),opacity 220ms ease; }
+@media (hover:hover) and (pointer:fine) {
+ .publication-card:hover::after { background-position:-30% 0; opacity:1; }
+ .launch-banner:hover,.sidebar-note:hover,.tips-list .MuiAccordion-root:hover { border-color:#4b9c8980; box-shadow:inset 0 1px 0 #ffffff90,0 18px 36px -22px #00695c55; }
+ .brand:hover .brand-logo { box-shadow:0 4px 14px #18312d35; }
+ .tips-list .MuiAccordionSummary-root:hover { background:#00695c08; }
+}
+@media (max-width:800px) { .discovery-hero { padding:20px 0; } .intro { padding-left:18px; } .intro h1 { font-size:40px; } }
+@media (max-width:500px) { .brand-logo { width:45px; height:30px; } .intro h1 { font-size:36px; } .intro-copy { font-size:15px !important; } }
+@media (max-width:360px) { .brand { font-size:16px; gap:5px; } .brand-logo { width:36px; height:24px; } .header-actions .MuiButton-root { padding:9px 7px; font-size:11px; } }
+@media (prefers-color-scheme:dark) { body::before { opacity:.08; } .publication-card::after { background-image:linear-gradient(115deg,transparent 20%,#8ad4bc25 45%,transparent 65%); } }
+@media (prefers-reduced-motion:reduce) { .publication-card::after { display:none; } }
+@media (prefers-reduced-transparency:reduce) { body::before { display:none; } }

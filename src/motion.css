@@ -1,0 +1,39 @@
+:root { --ease-out: cubic-bezier(.2,.8,.2,1); --surface-shadow: 0 14px 36px -16px rgba(0,69,58,.28); }
+main { animation: section-enter 380ms var(--ease-out) both; }
+.publication-card {
+  transition: transform 260ms var(--ease-out), box-shadow 260ms var(--ease-out), border-color 260ms ease;
+  animation: card-enter 420ms var(--ease-out) both;
+}
+.publication-card:nth-child(2) { animation-delay: 45ms; }
+.publication-card:nth-child(3) { animation-delay: 90ms; }
+.publication-card:nth-child(4) { animation-delay: 135ms; }
+.publication-card:nth-child(5) { animation-delay: 180ms; }
+.publication-card:nth-child(n+6) { animation-delay: 225ms; }
+.card-art { transition: filter 260ms ease; }
+.feature-icon { transition: transform 350ms var(--ease-out), opacity 260ms ease; }
+.art-caption { transition: transform 260ms var(--ease-out); }
+.launch-banner, .sidebar-note, .empty-state { transition: box-shadow 300ms var(--ease-out); }
+.nav-item { transition: background-color 220ms ease, color 220ms ease, transform 220ms var(--ease-out) !important; }
+.category-row .MuiChip-root { transition: background-color 200ms ease, color 200ms ease, border-color 200ms ease, transform 200ms var(--ease-out), box-shadow 200ms ease; }
+.search-row .MuiOutlinedInput-root { transition: box-shadow 220ms ease; }
+.search-row .Mui-focused { box-shadow: 0 0 0 4px rgba(0,105,92,.08); }
+.town-select { flex-shrink: 0; }
+/* Feedback for keyboard navigation as well as pointer interaction. */
+.publication-card:focus-within { border-color: #79ae99; box-shadow: var(--surface-shadow); }
+.publication-card .Mui-focusVisible { outline: 3px solid #00695c; outline-offset: -3px; }
+.launch-banner:focus-within, .sidebar-note:focus-within, .empty-state:focus-within { box-shadow: 0 12px 30px -18px rgba(0,69,58,.24); }
+@media (hover: hover) and (pointer: fine) {
+  .publication-card:hover { transform: translateY(-6px); box-shadow: var(--surface-shadow); border-color: #79ae99; }
+  .publication-card:hover .feature-icon { transform: scale(1.08) rotate(-3deg); opacity: .9; }
+  .publication-card:hover .art-caption { transform: translateX(-3px); }
+  .publication-card:hover .card-art { filter: saturate(1.12); }
+  .launch-banner:hover, .sidebar-note:hover, .empty-state:hover { box-shadow: 0 12px 30px -18px rgba(0,69,58,.24); }
+  .nav-item:hover { transform: translateX(3px); }
+  .category-row .MuiChip-root:hover { transform: translateY(-2px); box-shadow: 0 4px 12px -6px #00695c55; }
+}
+@keyframes section-enter { from { opacity: .7; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes card-enter { from { opacity: .6; translate: 0 12px; } to { opacity: 1; translate: 0 0; } }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  .publication-card:hover, .publication-card:hover .feature-icon, .publication-card:hover .art-caption, .nav-item:hover, .category-row .MuiChip-root:hover { transform: none; }
+}

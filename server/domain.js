@@ -1,0 +1,5 @@
+import { z } from 'zod';
+export const towns=['Gualeguaychú','Pueblo Belgrano','Urdinarrain'];
+export const publicationSchema=z.object({title:z.string().trim().min(5).max(100),business:z.string().trim().min(2).max(80),description:z.string().trim().min(15).max(1500),category:z.enum(['Gastronomía','Compras','Cultura','Educación','Servicios','Deportes']),kind:z.enum(['Promoción','Evento','Descuento']),town:z.enum(towns),address:z.string().trim().min(5).max(150),endsAt:z.string().regex(/^\d{4}-\d{2}-\d{2}$/),contact:z.string().email().max(150)}).superRefine((value,ctx)=>{if(Number.isNaN(Date.parse(value.endsAt))||value.endsAt<new Date().toLocaleDateString('en-CA',{timeZone:'America/Argentina/Buenos_Aires'}))ctx.addIssue({code:z.ZodIssueCode.custom,path:['endsAt'],message:'La fecha debe ser vigente.'});});
+export function isActive(item, date=new Date()){return item.status==='approved'&&(item.expiresAt?Date.parse(item.expiresAt)>date.getTime():item.endsAt>=date.toLocaleDateString('en-CA',{timeZone:'America/Argentina/Buenos_Aires'}));}
+export function publicItem({contact,ownerId,...item}){return item;}

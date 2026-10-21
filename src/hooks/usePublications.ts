@@ -1,0 +1,4 @@
+import { useEffect,useState } from 'react';
+import { api } from '../services/api';
+import type { Publication } from '../types';
+export function usePublications(){const [items,setItems]=useState<Publication[]>([]);const [loading,setLoading]=useState(true);const [error,setError]=useState('');const [revision,setRevision]=useState(0);useEffect(()=>{let alive=true;setLoading(true);setError('');api.list().then(data=>{if(alive)setItems(data.items);}).catch(err=>{if(alive)setError(err.message);}).finally(()=>{if(alive)setLoading(false);});return()=>{alive=false;};},[revision]);useEffect(()=>{const timer=setInterval(()=>setItems(current=>current.filter(item=>!item.expiresAt||Date.parse(item.expiresAt)>Date.now())),1000);return()=>clearInterval(timer);},[]);return {items,loading,error,retry:()=>setRevision(x=>x+1)};}

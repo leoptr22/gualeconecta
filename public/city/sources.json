@@ -1,0 +1,26 @@
+[
+  {
+    "file": "city-1.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:Gualeguaychu-Costanera-mar2024-1.jpg",
+    "original": "https://upload.wikimedia.org/wikipedia/commons/8/88/Gualeguaychu-Costanera-mar2024-1.jpg",
+    "author": "Ezarate",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "width": 6008,
+    "height": 4008,
+    "optimized": "coast.webp",
+    "modifications": "Redimensionado y convertido a WebP. La interfaz puede recortar el encuadre. CC BY-SA 4.0."
+  },
+  {
+    "file": "city-2.jpg",
+    "source": "https://commons.wikimedia.org/wiki/File:RioGualeguaychu-Clubpescadores.jpg",
+    "original": "https://upload.wikimedia.org/wikipedia/commons/4/42/RioGualeguaychu-Clubpescadores.jpg",
+    "author": "Ezarate",
+    "license": "CC BY-SA 4.0",
+    "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+    "width": 6008,
+    "height": 2792,
+    "optimized": "river.webp",
+    "modifications": "Redimensionado y convertido a WebP. La interfaz puede recortar el encuadre. CC BY-SA 4.0."
+  }
+]

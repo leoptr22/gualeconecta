@@ -1,0 +1,196 @@
+{
+  "project": "Guale Conecta",
+  "purpose": "Registro local del sistema implementado; no es un esquema oficial de Impeccable.",
+  "sources": [
+    "PRODUCT.md",
+    "src/main.tsx",
+    "src/styles.css",
+    "src/glass.css",
+    "src/motion.css",
+    "src/components/CityCarousel.tsx",
+    "public/city/sources.json"
+  ],
+  "direction": {
+    "style": "Neobrutalismo con detalle glass en cabecera",
+    "components": "Material UI",
+    "imagery": "Logo oficial Guale Conecta con nodo azul; bandera solo como fondo tenue",
+    "designVariance": 6,
+    "motionIntensity": 4,
+    "visualDensity": 5
+  },
+  "tokens": {
+    "light": {
+      "solid": "#fffdf5",
+      "accent": "#6333ee",
+      "glass": "rgba(255,253,245,.94)",
+      "glassLine": "#18181b",
+      "muted": "#514954",
+      "page": "#fff6df",
+      "ink": "#18181b"
+    },
+    "dark": {
+      "solid": "#302b3d",
+      "accent": "#c7b4ff",
+      "glass": "rgba(48,43,61,.94)",
+      "glassLine": "#08070a",
+      "muted": "#d0c6dd",
+      "page": "#201d29",
+      "ink": "#fff6df"
+    },
+    "secondary": "#ff76b0",
+    "font": {
+      "family": [
+        "Manrope",
+        "Segoe UI",
+        "Arial",
+        "sans-serif"
+      ],
+      "localWeights": [
+        400,
+        600,
+        700,
+        800
+      ]
+    },
+    "radiiPx": {
+      "emptyState": 0,
+      "search": 0,
+      "button": 0,
+      "theme": 14,
+      "checklist": 0,
+      "accordion": 0,
+      "publicationCard": 0,
+      "sidebar": 0,
+      "launchBanner": 0
+    },
+    "glass": {
+      "blurPx": 16,
+      "saturationPercent": 125,
+      "borderPx": 1,
+      "searchAndCarouselControlsBlurPx": 12
+    },
+    "zIndex": {
+      "header": 10,
+      "overlays": "Material UI theme defaults"
+    },
+    "motion": {
+      "easeOut": "cubic-bezier(.23,1,.32,1)",
+      "photoFadeMs": 240,
+      "cardEnterMs": 240,
+      "cardTransitionMs": 260,
+      "cardDetailMs": 180,
+      "navigationMs": 220,
+      "chipsMs": 200,
+      "mainAnimation": "none",
+      "pressedButtonScale": 0.97
+    },
+    "brutal": {
+      "violet": "#6333ee",
+      "pink": "#ff76b0",
+      "controlBorderPx": 2,
+      "radiusPx": 0,
+      "acid": "#deff00",
+      "borderPx": 3,
+      "shadowPx": {
+        "sidebar": 5,
+        "button": 4,
+        "hero": 8,
+        "panel": 6
+      },
+      "cyan": "#77e8ec"
+    }
+  },
+  "responsive": {
+    "maxWidthPx": 1280,
+    "desktopSidebarPx": 205,
+    "desktopGapPx": 24,
+    "breakpointsPx": [
+      1100,
+      800,
+      500
+    ],
+    "at800": "Una columna, navegación horizontal y búsqueda apilada",
+    "at500": "Navegación 2x2: Descubrir, Agenda, Comercios y Consejos; tarjetas en una columna"
+  },
+  "carousel": {
+    "automatic": false,
+    "controls": [
+      "Botones anterior/siguiente de 44px",
+      "ArrowLeft",
+      "ArrowRight"
+    ],
+    "slides": [
+      "/city/river.webp",
+      "/city/coast.webp"
+    ],
+    "author": "Ezarate",
+    "license": "CC BY-SA 4.0",
+    "attributionManifest": "public/city/sources.json",
+    "features": [
+      "Texto alternativo",
+      "Foco visible",
+      "Título aria-live polite",
+      "Mensaje de error de carga",
+      "srcSet 800w y 1600w"
+    ]
+  },
+  "preferences": {
+    "colorScheme": "Sistema",
+    "reducedMotion": "Sin animaciones, transiciones ni transformaciones de feedback",
+    "reducedTransparency": "Superficies sólidas sin blur, incluida búsqueda",
+    "noBackdropFilter": "Superficies principales sólidas; búsqueda y controles del carrusel no incluidos en ese selector"
+  },
+  "references": {
+    "consulted": [
+      "emilkowalski/skills: emil-design-eng",
+      "pbakaus/impeccable: new-work y craft-floor",
+      "Leonxlnx/taste-skill: design-taste-frontend"
+    ],
+    "impeccableLauncherInstalled": false
+  },
+  "status": {
+    "finalVisualReview": "Cabecera integrada: capturas compacta y móvil y medidas DOM sin desborde; compilación y 28 pruebas aprobadas",
+    "finalApproval": "No declarada",
+    "googleLiveAuthentication": "Cliente OAuth configurado y botón oficial visible; entrada real pendiente del usuario"
+  },
+  "revision": {
+    "flag": "/brand/gualeguaychu.png",
+    "carouselVisible": false,
+    "search": {
+      "pauseOnFocus": true,
+      "reducedMotion": "static",
+      "deletingMs": 32,
+      "typingMs": 65,
+      "pauseMs": 2400
+    },
+    "flagOpacity": {
+      "dark": 0.035,
+      "light": 0.045
+    },
+    "cardSheenMs": 650
+  },
+  "logo": {
+    "desktop": {
+      "width": 220,
+      "height": 76
+    },
+    "asset": "/brand/guale-conecta.png",
+    "source": "Imagen aportada por el usuario",
+    "mobile": {
+      "width": 140,
+      "height": 49
+    },
+    "originalPreserved": true
+  },
+  "header": {
+    "sidebar": false,
+    "minControlHeightPx": 44,
+    "singleRowAbovePx": 950,
+    "background": "#ffffff",
+    "ink": "#18181b",
+    "maxWidth": 1280,
+    "mobileNav": "Cuatro columnas iguales",
+    "component": "AppHeader",
+    "brandBlue": "#001cff"
+  }
+}

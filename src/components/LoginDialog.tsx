@@ -1,0 +1,17 @@
+import { useEffect,useRef,useState } from 'react';
+import { Alert,Button,Dialog,DialogTitle,DialogContent,DialogActions,Typography,CircularProgress } from '@mui/material';
+type GoogleApi={accounts:{id:{initialize:(options:{client_id:string;nonce:string;callback:(response:{credential:string})=>void;auto_select:boolean})=>void;renderButton:(element:HTMLElement,options:Record<string,unknown>)=>void}}};
+const google=()=>(window as unknown as {google?:GoogleApi}).google;
+let googleScript:Promise<void>|undefined;
+function loadGoogle(){
+ if(google())return Promise.resolve();
+ if(!googleScript)googleScript=new Promise<void>((resolve,reject)=>{const script=document.createElement('script');script.src='https://accounts.google.com/gsi/client';script.async=true;script.onload=()=>resolve();script.onerror=()=>{script.remove();googleScript=undefined;reject(new Error('No pudimos cargar Google. Revisá tu conexión e intentá nuevamente.'));};document.head.append(script);});
+ return googleScript;
+}
+export function LoginDialog({open,onClose,clientId,csrfToken,loading,error,onRetry,onLogin,onAdmin}:{open:boolean;onClose:()=>void;clientId:string|null;csrfToken:string;loading:boolean;error:string;onRetry:()=>void;onLogin:(credential:string)=>Promise<void>;onAdmin?:()=>void}){
+ const button=useRef<HTMLDivElement>(null);const [message,setMessage]=useState('');const [working,setWorking]=useState(false);const [ready,setReady]=useState(false);const [retry,setRetry]=useState(0);
+ useEffect(()=>{if(!open||loading||error||!clientId||!csrfToken)return;let active=true;setMessage('');setWorking(false);setReady(false);loadGoogle().then(()=>{if(!active||!button.current)return;google()!.accounts.id.initialize({client_id:clientId,nonce:csrfToken,auto_select:false,callback:response=>{if(!active)return;setWorking(true);onLogin(response.credential).then(()=>{if(active){setWorking(false);onClose();}}).catch(error=>{if(active)setMessage(error.message);}).finally(()=>{if(active)setWorking(false);});}});button.current.replaceChildren();google()!.accounts.id.renderButton(button.current,{theme:'outline',size:'large',shape:'pill',text:'continue_with',locale:'es',width:280});setReady(true);}).catch(error=>{if(active)setMessage(error.message);});return()=>{active=false;};},[open,loading,error,clientId,csrfToken,onLogin,onClose,retry]);
+ return <Dialog open={open} onClose={()=>{if(!working)onClose();}} fullWidth maxWidth="xs"><DialogTitle>Tu cuenta en Guale Conecta</DialogTitle><DialogContent><Typography color="text.secondary" mb={3}>Ingresá con Google para publicar y vincular tus propuestas a tu cuenta. Explorar la ciudad es libre.</Typography>{loading?<CircularProgress aria-label="Preparando inicio de sesión"/>:error?<Alert severity="error" action={<Button onClick={onRetry}>Reintentar</Button>}>{error}</Alert>:!clientId?<Alert severity="info">El acceso con Google todavía no está habilitado. El administrador debe completar la configuración para permitir publicaciones.</Alert>:<><div ref={button} className="google-login-button"/>{!ready&&!message&&<CircularProgress size={24} aria-label="Cargando Google"/>}{working&&<Typography mt={2}>Verificando tu cuenta…</Typography>}{message&&<Alert severity="error" sx={{mt:2}} action={<Button onClick={()=>{onRetry();setRetry(x=>x+1);}}>Reintentar</Button>}>{message}</Alert>}</>}</DialogContent><DialogActions>{onAdmin&&<Button onClick={onAdmin} disabled={working}>Acceso administrador</Button>}<Button disabled={working} onClick={onClose}>Cerrar</Button></DialogActions></Dialog>;
+}
+
+
