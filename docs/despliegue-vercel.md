@@ -2,6 +2,8 @@
 
 ## Backend integrado
 
+El origen principal es `https://gualeconecta-leoptr22s-projects.vercel.app`. El alias corto `gualeconecta.vercel.app` redirige allí para conservar el origen configurado de las cookies, CSRF y Google. Al cambiar de dominio, actualizar tanto `APP_ORIGIN` como esa redirección y los orígenes autorizados de Google.
+
 La versión actual ejecuta Express en `api/index.js`, junto al frontend Vite. Las publicaciones siguen en Sheets. `STATE_STORAGE=postgres` guarda usuarios, hashes de sesiones, visitas y límites de solicitudes en Neon; `MEDIA_STORAGE=blob` guarda los adjuntos en el almacén Blob del proyecto. En producción no se utilizan archivos SQLite ni el disco local como almacenamiento permanente. El directorio temporal se usa solo durante la validación de imágenes y video.
 
 La carga del navegador va directamente a Blob, con autorización de sesión y CSRF. El servidor permite rutas temporales asociadas al propietario, verifica tamaño y contenido real, convierte las fotos y comprueba el video con FFprobe antes de generar los enlaces definitivos. Un archivo de 20 MB no atraviesa el cuerpo de una Function. Las cargas canceladas pueden eliminarse; una tarea programada limpia los temporales abandonados de más de una hora.
