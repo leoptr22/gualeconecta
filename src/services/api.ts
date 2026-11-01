@@ -4,6 +4,10 @@ export type AdminPublication=Publication & {status:'pending'|'approved';createdA
 import type { AuthUser } from '../hooks/useAuth';
 async function request(path:string,options?:RequestInit){const response=await fetch('/api'+path,options);const data=await response.json();if(!response.ok)throw new Error(data.error||'No pudimos conectar. Intentá nuevamente.');return data;}
 export const api={
+ pushConfig:():Promise<{configured:boolean;publicKey:string|null}>=>request('/admin/push/config'),
+ pushSubscribe:async(subscription:PushSubscriptionJSON)=>{const session=await api.session();return request('/admin/push/subscribe',{method:'POST',headers:{'Content-Type':'application/json','X-CSRF-Token':session.csrfToken},body:JSON.stringify(subscription)});},
+ pushUnsubscribe:async(endpoint:string)=>{const session=await api.session();return request('/admin/push/unsubscribe',{method:'POST',headers:{'Content-Type':'application/json','X-CSRF-Token':session.csrfToken},body:JSON.stringify({endpoint})});},
+ pushTest:async(endpoint:string)=>{const session=await api.session();return request('/admin/push/test',{method:'POST',headers:{'Content-Type':'application/json','X-CSRF-Token':session.csrfToken},body:JSON.stringify({endpoint})});},
  visit:async()=>{const response=await fetch('/api/visits',{method:'POST'});if(!response.ok)throw new Error('No se pudo registrar la visita');},
  visitStats:():Promise<VisitSummary>=>request('/admin/visits'),
  list:():Promise<{items:Publication[]}>=>request('/publications'),

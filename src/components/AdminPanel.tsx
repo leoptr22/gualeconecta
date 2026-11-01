@@ -1,3 +1,4 @@
+import { ReviewPushSettings } from './ReviewPushSettings';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Alert, Button, Chip, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Typography } from '@mui/material';
 import { api, type AdminPublication } from '../services/api';
@@ -22,6 +23,7 @@ export function AdminPanel({ onApproved }: { onApproved:()=>void }) {
     finally { setLoading(false); }
   },[]);
   useEffect(()=>{void load();},[load]);
+  useEffect(()=>{if(loading||error)return;const url=new URL(window.location.href);const id=url.searchParams.get('adminReview');if(!id)return;const item=items.find(item=>item.id===id);url.searchParams.delete('adminReview');url.searchParams.set('adminPanel','1');window.history.replaceState(null,'',url);if(item)setSelected(item);else setError('La publicación indicada ya no está disponible en el panel.');},[items,loading,error]);
   const visible = useMemo(()=>items.filter(item=>item.status===filter&&`${item.title} ${item.business}`.toLocaleLowerCase('es').includes(query.toLocaleLowerCase('es'))),[items,filter,query]);
   const approve = async () => {
     if(!selected||saving)return;
@@ -34,7 +36,7 @@ export function AdminPanel({ onApproved }: { onApproved:()=>void }) {
     finally { setSaving(false); }
   };
   return <section className="admin-panel" aria-labelledby="admin-panel-title">
-    <VisitStats/>
+    <VisitStats/><ReviewPushSettings/>
     <Alert severity="info" sx={{mb:3}}>Las publicaciones de administradores duran hasta finalizar el día posterior a la fecha indicada. Las de otros usuarios duran 24 horas desde su aprobación. Al vencer, se eliminan con sus adjuntos.</Alert>
     <div className="admin-heading"><div><Typography component="h1" id="admin-panel-title">Revisá antes de publicar.</Typography><Typography color="text.secondary">Comprobá los datos y los adjuntos. Solo las publicaciones aprobadas y vigentes aparecen en la ciudad.</Typography></div><Button variant="outlined" onClick={()=>void load()} disabled={loading||saving}>Actualizar</Button></div>
     <div className="admin-toolbar"><div className="admin-filters">{(['pending','approved'] as const).map(status=><Button key={status} variant={filter===status?'contained':'outlined'} aria-pressed={filter===status} onClick={()=>{setFilter(status);setNotice('');}}>{status==='pending'?'Pendientes':'Aprobadas'} · {items.filter(item=>item.status===status).length}</Button>)}</div><TextField label="Buscar por título o comercio" value={query} onChange={event=>setQuery(event.target.value)} size="small"/></div>

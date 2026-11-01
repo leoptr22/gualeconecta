@@ -5,6 +5,10 @@ import { api, type AdminPublication } from '../services/api';
 afterEach(()=>{cleanup();vi.restoreAllMocks();});
 beforeEach(()=>{vi.spyOn(api,'visitStats').mockResolvedValue({total:12,today:3,startedAt:'2026-10-04T12:00:00Z'});});
 const item:AdminPublication={id:'test-only',title:'Propuesta aislada',business:'Cuenta de prueba',description:'Texto completo para revisión.',category:'Compras',kind:'Promoción',town:'Gualeguaychú',address:'Dirección de prueba',contact:'test@example.com',endsAt:'2099-12-31',createdAt:'2026-01-01',status:'pending',media:[]};
+it('opens the private review from a notification link and consumes the link once',async()=>{
+ window.history.replaceState(null,'','/?adminReview='+item.id);vi.spyOn(api,'adminList').mockResolvedValue({items:[item]});
+ try{render(<AdminPanel onApproved={()=>{}}/>);expect(await screen.findByText(item.description)).toBeInTheDocument();expect(new URL(window.location.href).searchParams.has('adminReview')).toBe(false);expect(screen.getByRole('button',{name:'Aprobar publicación'})).toBeInTheDocument();}finally{window.history.replaceState(null,'','/');}
+});
 it('reviews details before approval and updates pending and approved lists',async()=>{
  vi.spyOn(api,'adminList').mockResolvedValue({items:[item]});const approve=vi.spyOn(api,'approve').mockResolvedValue({id:item.id,status:'approved'});const onApproved=vi.fn();
  render(<AdminPanel onApproved={onApproved}/>);

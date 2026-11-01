@@ -60,6 +60,8 @@ main { padding:0 8px 12px 0; }
 .card-share-actions { margin-top:auto; flex-shrink:0; border-top:2px solid var(--edge); padding:8px 16px; display:flex; justify-content:flex-end; }
 .card-share-actions .share-publication { color:var(--ink); }
 .share-dialog-content { display:flex; flex-direction:column; gap:18px; padding-top:8px !important; overflow-wrap:anywhere; }
+.review-push-settings { display:flex; flex-direction:column; gap:16px; margin:0 0 28px; padding:22px; background:var(--solid); border:3px solid var(--edge); box-shadow:5px 5px 0 var(--edge); }
+.review-push-actions { display:flex; flex-wrap:wrap; align-items:center; gap:12px; }
 .tips-intro h1 { font-weight:800; line-height:1.05; letter-spacing:-.055em; }
 .tips-checklist { background:var(--acid) !important; color:#18181b; }
 .tips-checklist .MuiTypography-root { color:#18181b; }

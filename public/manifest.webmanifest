@@ -1,0 +1,12 @@
+{
+  "id": "/",
+  "name": "Guale Conecta",
+  "short_name": "Guale Conecta",
+  "lang": "es-AR",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#fff6df",
+  "theme_color": "#001cff",
+  "icons": [{ "src": "/push-icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }]
+}
