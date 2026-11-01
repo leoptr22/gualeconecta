@@ -7,9 +7,14 @@
   "redirects": [
     {
       "source": "/:path*",
-      "has": [{ "type": "host", "value": "gualeconecta.vercel.app" }],
-      "destination": "https://gualeconecta-leoptr22s-projects.vercel.app/:path*",
-      "permanent": true
+      "has": [
+        {
+          "type": "host",
+          "value": "gualeconecta-leoptr22s-projects.vercel.app"
+        }
+      ],
+      "destination": "https://gualeconecta.vercel.app/:path*",
+      "permanent": false
     }
   ],
   "functions": {
@@ -18,9 +23,20 @@
       "excludeFiles": "node_modules/ffprobe-static/bin/{darwin,win32,linux/ia32}/**"
     }
   },
-  "crons": [{ "path": "/api/cron/cleanup", "schedule": "0 3 * * *" }],
+  "crons": [
+    {
+      "path": "/api/cron/cleanup",
+      "schedule": "0 3 * * *"
+    }
+  ],
   "rewrites": [
-    { "source": "/api/:path*", "destination": "/api/index" },
-    { "source": "/((?!api(?:/|$)).*)", "destination": "/index.html" }
+    {
+      "source": "/api/:path*",
+      "destination": "/api/index"
+    },
+    {
+      "source": "/((?!api(?:/|$)).*)",
+      "destination": "/index.html"
+    }
   ]
 }

@@ -8,7 +8,7 @@ import { put } from '@vercel/blob/client';
 
 const [deployment,cliPath]=process.argv.slice(2);
 if(!deployment?.startsWith('https://gualeconecta-')||!cliPath)throw new Error('Indicá el despliegue propio y la ruta del CLI oficial.');
-const origin='https://gualeconecta-leoptr22s-projects.vercel.app';
+const origin='https://gualeconecta.vercel.app';
 const local=parse(readFileSync('.env','utf8'));const cookieFile=resolve('data/backend-verification.cookies');
 async function request(path,{body,csrf}={}) {
  const args=[cliPath,'curl',path,'--deployment',deployment,'--scope','leoptr22s-projects','--','--silent','--show-error','--cookie',cookieFile,'--cookie-jar',cookieFile,'--header','Origin: '+origin];
