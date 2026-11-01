@@ -38,7 +38,7 @@ export function createApp(repository,env=process.env,authService){
   const parsed=publicationSchema.safeParse(req.body);
   if(!parsed.success){await mediaStorage.discard(req.files);return res.status(400).json({error:'Revisá los campos y la fecha de vigencia.'});}
   const saved=cloud?await cloud.finalize(req.body.media||[],req.user.id):await mediaStorage.save(req.files);
-  try{const item=await repository.create({...parsed.data,ownerId:req.user.id,media:saved.media,id:randomUUID(),status:'pending',createdAt:new Date().toISOString()});res.status(201).json({id:item.id,status:'pending'});}
+  try{const item=await repository.create({...parsed.data,ownerId:req.user.id,publicationPlan:req.user.role==='admin'?'admin-event':'free',media:saved.media,id:randomUUID(),status:'pending',createdAt:new Date().toISOString()});res.status(201).json({id:item.id,status:'pending'});}
   catch(error){await saved.rollback();throw error;}
  });
  app.use('/api/admin',(req,res,next)=>{const expected=Buffer.from(env.ADMIN_TOKEN||'');const actual=Buffer.from(req.headers.authorization?.replace(/^Bearer /,'')||'');if(expected.length&&expected.length===actual.length&&timingSafeEqual(expected,actual)){res.setHeader('Cache-Control','no-store');return next();}if(auth.requireAdmin)return auth.requireAdmin(req,res,next);res.status(401).json({error:'No autorizado'});});

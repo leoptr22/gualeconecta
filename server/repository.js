@@ -8,7 +8,7 @@ export function createRepository(env=process.env){
  if(env.STORAGE==='sheets'){
   if(!env.SHEETS_WEBHOOK_URL||!env.SHEETS_SECRET)throw new Error('Falta configurar Google Sheets');
   const call=async(action,payload={})=>{const response=await fetch(env.SHEETS_WEBHOOK_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({secret:env.SHEETS_SECRET,action,...payload}),signal:AbortSignal.timeout(15000)});if(!response.ok)throw new Error('Sheets no disponible');const result=await response.json();if(!result.ok)throw new Error('Sheets rechazó la operación');return result.data;};
-  return {list:()=>call('list'),create:item=>call('create',{item}),approve:id=>call('approve',{id,window:approvalWindow()}),removeExpired:time=>call('removeExpired',{now:(time||new Date()).toISOString(),window:approvalWindow(time)})};
+  return {list:()=>call('list'),create:item=>call('create',{item}),approve:async id=>{const item=(await call('list')).find(item=>item.id===id);if(!item)return undefined;if(item.status==='approved')return item;return call('approve',{id,window:approvalWindow(new Date(),item)});},removeExpired:time=>call('removeExpired',{now:(time||new Date()).toISOString(),window:approvalWindow(time)})};
  }
  if(env.STORAGE && env.STORAGE!=='sqlite')throw new Error('STORAGE debe ser sqlite o sheets');
  const databasePath=env.DATABASE_PATH ? (env.DATABASE_PATH===':memory:'?':memory:':resolve(env.DATABASE_PATH)) : defaultDatabasePath;
@@ -25,7 +25,7 @@ export function createRepository(env=process.env){
  // Existing approved publications receive a full window when this policy is adopted.
  for(const row of database.prepare("SELECT id,payload,status FROM publications WHERE status='approved'").all()) {
   const item=decode(row);
-  if(!item.expiresAt)database.prepare('UPDATE publications SET payload=? WHERE id=?').run(JSON.stringify({...item,...approvalWindow()}),row.id);
+  if(!item.expiresAt)database.prepare('UPDATE publications SET payload=? WHERE id=?').run(JSON.stringify({...item,...approvalWindow(new Date(),item)}),row.id);
  }
  return {
   databasePath,
@@ -35,7 +35,7 @@ export function createRepository(env=process.env){
    const item=decode(database.prepare('SELECT payload,status FROM publications WHERE id=?').get(id));
    if(!item)return undefined;
    if(item.status==='approved')return item;
-   const approved={...item,status:'approved',...approvalWindow()};
+   const approved={...item,status:'approved',...approvalWindow(new Date(),item)};
    database.prepare("UPDATE publications SET status='approved',payload=? WHERE id=? AND status='pending'").run(JSON.stringify(approved),id);
    return decode(database.prepare('SELECT payload,status FROM publications WHERE id=?').get(id));
   },
