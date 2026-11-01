@@ -4,8 +4,15 @@
   "installCommand": "npm ci",
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
+  "functions": {
+    "api/index.js": {
+      "maxDuration": 300,
+      "excludeFiles": "node_modules/ffprobe-static/bin/{darwin,win32,linux/ia32}/**"
+    }
+  },
+  "crons": [{ "path": "/api/cron/cleanup", "schedule": "0 3 * * *" }],
   "rewrites": [
-    { "source": "/api/:path*", "destination": "/api/unavailable" },
+    { "source": "/api/:path*", "destination": "/api/index" },
     { "source": "/((?!api(?:/|$)).*)", "destination": "/index.html" }
   ]
 }

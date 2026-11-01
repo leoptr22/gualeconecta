@@ -1,3 +1,4 @@
+import { createPostgresAnalytics } from './postgres-analytics.js';
 import { DatabaseSync } from 'node:sqlite';
 import { mkdirSync } from 'node:fs';
 import { dirname,resolve } from 'node:path';
@@ -9,6 +10,7 @@ const day = time => new Date(time).toLocaleDateString('en-CA',{timeZone:'America
 const hash = value => createHash('sha256').update(value).digest('hex');
 const windowMs = 30*60*1000;
 export function createAnalytics(env=process.env,now=Date.now) {
+ if(env.STATE_STORAGE==='postgres')return createPostgresAnalytics(env,now);
  const path=env.ANALYTICS_DATABASE_PATH===':memory:'||process.env.NODE_ENV==='test'?':memory:':env.ANALYTICS_DATABASE_PATH?resolve(env.ANALYTICS_DATABASE_PATH):fileURLToPath(new URL('../data/visitas.sqlite',import.meta.url));
  if(path!==':memory:')mkdirSync(dirname(path),{recursive:true});
  const db=new DatabaseSync(path);

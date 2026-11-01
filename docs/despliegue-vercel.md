@@ -1,5 +1,17 @@
 # Despliegue en Vercel
 
+## Backend integrado
+
+La versión actual ejecuta Express en `api/index.js`, junto al frontend Vite. Las publicaciones siguen en Sheets. `STATE_STORAGE=postgres` guarda usuarios, hashes de sesiones, visitas y límites de solicitudes en Neon; `MEDIA_STORAGE=blob` guarda los adjuntos en el almacén Blob del proyecto. En producción no se utilizan archivos SQLite ni el disco local como almacenamiento permanente. El directorio temporal se usa solo durante la validación de imágenes y video.
+
+La carga del navegador va directamente a Blob, con autorización de sesión y CSRF. El servidor permite rutas temporales asociadas al propietario, verifica tamaño y contenido real, convierte las fotos y comprueba el video con FFprobe antes de generar los enlaces definitivos. Un archivo de 20 MB no atraviesa el cuerpo de una Function. Las cargas canceladas pueden eliminarse; una tarea programada limpia los temporales abandonados de más de una hora.
+
+El catálogo oculta cada publicación al cumplirse sus 24 horas. La eliminación física se ejecuta al consultar el catálogo si hay vencidas y mediante el cron diario a las 03:00 UTC. Este esquema no depende de un intervalo en memoria. En periodos sin tráfico, la eliminación física puede esperar hasta el cron diario, aunque la publicidad ya esté oculta. La tarea requiere `CRON_SECRET` y no se expone al navegador.
+
+`scripts/migrate-state-to-neon.mjs` conserva usuarios y estadísticas locales con una marca de migración para no sumar visitas dos veces. No copia sesiones locales al dominio público. `scripts/configure-vercel-backend.mjs` y su compañero PowerShell guardan la configuración por stdin sin imprimir valores. Los archivos temporales privados se guardan bajo `data/`, excluido de Git y Vercel.
+
+Los apartados siguientes describen la preparación inicial y la alternativa de un servidor externo; ya no es necesario contratar ese servidor para la arquitectura integrada.
+
 Repositorio: https://github.com/leoptr22/gualeconecta. Rama actual: `master`.
 
 ## Estado preparado

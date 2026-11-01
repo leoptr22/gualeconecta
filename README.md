@@ -4,6 +4,8 @@ Primera versión React + TypeScript + Material UI para descubrir eventos, promoc
 
 ## Ejecutar
 
+Producción en Vercel: frontend y Express se despliegan juntos. Sheets conserva las publicaciones, Neon guarda cuentas/sesiones/visitas y Blob guarda fotos/videos con cargas directas. La ejecución local conserva SQLite y archivos locales según `.env`. Ver [despliegue y migración](docs/despliegue-vercel.md).
+
 Requiere Node 22.14 o superior (SQLite incluido en Node, marcado experimental en Node 22).
 
 ```sh

@@ -7,7 +7,6 @@ dist/
 .git/
 .impeccable/
 docs/
-server/
 scripts/
 integrations/
 Dockerfile
