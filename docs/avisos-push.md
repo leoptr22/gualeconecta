@@ -11,6 +11,8 @@ Activar cada teléfono o computadora por separado. En iPhone/iPad, agregar la we
 
 Al tocar un aviso se abre `/?adminReview=ID`. Si falta sesión, la app solicita ingresar; la publicación pendiente nunca se expone al catálogo público. El panel abre su detalle una vez y muestra el botón de aprobación. Si ya se revisó o desapareció, informa su estado actual.
 
+Si aparece «Registration failed - push service error», el registro falló en el servicio push del navegador antes de guardar el dispositivo. En Brave, revisar `brave://settings/privacy` → «Usar los servicios de Google para mensajes push», reiniciar y repetir la activación. Si ya estaba habilitado, comprobar la conexión y posibles bloqueos de red al servicio push. Esta preferencia la cambia el propietario del navegador. [Ayuda oficial de Brave](https://support.brave.app/hc/en-us/articles/360017989132-How-do-I-change-my-Privacy-Settings).
+
 ## Servidor
 
 Se utiliza Web Push con VAPID, sin una cuenta de mensajería adicional. Generar las claves una sola vez con `node scripts/configure-review-push.mjs` y guardar las variables de producción con `scripts/configure-review-push.ps1`. La clave privada permanece fuera de Git, del frontend y de los registros. Conservar las mismas claves entre despliegues; cambiarlas requiere volver a activar los dispositivos.

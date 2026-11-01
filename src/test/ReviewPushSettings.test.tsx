@@ -10,7 +10,7 @@ function setup(permission='granted'){
  const registration={pushManager:{getSubscription:vi.fn().mockResolvedValue(null),subscribe:vi.fn().mockResolvedValue(sub)}};
  const register=vi.fn().mockResolvedValue(registration);Object.defineProperty(navigator,'serviceWorker',{configurable:true,value:{register,ready:Promise.resolve(registration),getRegistration:vi.fn().mockResolvedValue(undefined)}});
  vi.spyOn(api,'pushConfig').mockResolvedValue({configured:true,publicKey:'B'+'A'.repeat(86)});const subscribe=vi.spyOn(api,'pushSubscribe').mockResolvedValue({subscribed:true});
- return {requestPermission,register,sub,subscribe};
+ return {requestPermission,register,sub,subscribe,registration};
 }
 it('requests permission only after an explicit click and saves the device subscription',async()=>{
  const context=setup();render(<ReviewPushSettings/>);const button=screen.getByRole('button',{name:'Activar notificaciones'});await waitFor(()=>expect(button).toBeEnabled());expect(context.requestPermission).not.toHaveBeenCalled();fireEvent.click(button);
@@ -19,4 +19,14 @@ it('requests permission only after an explicit click and saves the device subscr
 });
 it('handles denied permission without registering a worker or device',async()=>{
  const context=setup('denied');render(<ReviewPushSettings/>);const button=screen.getByRole('button',{name:'Activar notificaciones'});await waitFor(()=>expect(button).toBeEnabled());fireEvent.click(button);expect(await screen.findByText(/Las notificaciones no están permitidas/)).toBeInTheDocument();expect(context.register).not.toHaveBeenCalled();expect(context.subscribe).not.toHaveBeenCalled();
+});
+it('explains how to recover when the browser push service is unavailable without saving a device',async()=>{
+ const context=setup();context.registration.pushManager.subscribe.mockRejectedValue(new DOMException('Registration failed - push service error','AbortError'));
+ render(<ReviewPushSettings/>);const button=screen.getByRole('button',{name:'Activar notificaciones'});await waitFor(()=>expect(button).toBeEnabled());fireEvent.click(button);
+ expect(await screen.findByText(/brave:\/\/settings\/privacy/)).toBeInTheDocument();expect(context.subscribe).not.toHaveBeenCalled();expect(screen.queryByText('Activadas en este dispositivo')).not.toBeInTheDocument();expect(button).toBeEnabled();
+});
+it('keeps server errors distinct from browser registration failures and rolls back the subscription',async()=>{
+ const context=setup();context.subscribe.mockRejectedValue(new Error('Tu sesión venció. Volvé a ingresar.'));
+ render(<ReviewPushSettings/>);const button=screen.getByRole('button',{name:'Activar notificaciones'});await waitFor(()=>expect(button).toBeEnabled());fireEvent.click(button);
+ expect(await screen.findByText('Tu sesión venció. Volvé a ingresar.')).toBeInTheDocument();expect(context.sub.unsubscribe).toHaveBeenCalledOnce();expect(screen.queryByText(/brave:\/\/settings\/privacy/)).not.toBeInTheDocument();
 });

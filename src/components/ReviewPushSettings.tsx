@@ -4,6 +4,14 @@ import NotificationsActiveOutlined from '@mui/icons-material/NotificationsActive
 import { api } from '../services/api';
 
 function serverKey(value:string){const raw=atob(value.replace(/-/g,'+').replace(/_/g,'/'));return Uint8Array.from(raw,char=>char.charCodeAt(0));}
+async function subscribeDevice(registration:ServiceWorkerRegistration,key:string){
+ try{return await registration.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:serverKey(key)});}
+ catch(cause){
+  const message=cause&&typeof cause==='object'&&'message' in cause?String(cause.message):'';
+  if(/push service (error|not available)/i.test(message))throw new Error('El navegador no pudo conectarse al servicio de notificaciones. Si usás Brave, abrí brave://settings/privacy y activá «Usar los servicios de Google para mensajes push». Reiniciá el navegador y volvé a intentar. Si la opción ya estaba activada, comprobá tu conexión y que la red permita el servicio push.');
+  throw cause;
+ }
+}
 export function ReviewPushSettings(){
  const supported=typeof Notification!=='undefined'&&'serviceWorker' in navigator&&'PushManager' in window;
  const [config,setConfig]=useState<{configured:boolean;publicKey:string|null}|null>(null);
@@ -19,7 +27,7 @@ export function ReviewPushSettings(){
    const permission=await Notification.requestPermission();if(permission!=='granted')throw new Error('Las notificaciones no están permitidas. Habilitalas en los permisos del sitio para recibir los avisos.');
    await navigator.serviceWorker.register('/push-sw.js',{scope:'/'});const registration=await navigator.serviceWorker.ready;
    const previous=await registration.pushManager.getSubscription();if(previous)await previous.unsubscribe();
-   created=await registration.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:serverKey(config.publicKey)});
+   created=await subscribeDevice(registration,config.publicKey);
    await api.pushSubscribe(created.toJSON());setSubscription(created);setMessage('Avisos activados en este dispositivo.');
   }catch(error){if(created)await created.unsubscribe().catch(()=>{});setError((error as Error).message||'No se pudieron activar los avisos. Revisá los permisos del navegador.');}
   finally{setBusy(false);}
